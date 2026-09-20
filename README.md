@@ -222,7 +222,7 @@ npm run build
 
 | 项 | 现状 | 处理 |
 |----|------|------|
-| 桌面二进制 | Tauri 需 Rust + 系统构建工具链；本机未安装 | 配置已齐备，`cargo tauri build` 一键产出；CI 分平台打包 Python sidecar（见 ADR-001） |
+| 桌面二进制 | 本机无需 Rust：CI 矩阵（win/mac/linux）用 PyInstaller 打 sidecar + Tauri 出安装包 | Actions → Desktop Release 手动触发，或推 `v*` tag 自动发 Release（见 `.github/workflows/release.yml`） |
 | LanceDB wheel | Python 3.13 / win_amd64 可能无可用 wheel | 自动降级为 `NumpyVectorStore`（进程内、零依赖），抽象层不变（见 ADR-003） |
 | 沙箱 pip | 某些受限环境禁止写 site-packages | 可用 `pip install --target .pylibs ...` + `PYTHONPATH` 规避；干净环境无需此步 |
 | Numpy 向量检索 | 全量扫描 O(n)，适合中小知识库 | 大规模场景切换 LanceDB 后端（同一 `VectorStore` 协议） |

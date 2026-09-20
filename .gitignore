@@ -20,6 +20,11 @@ frontend/dist/
 # --- Rust / Tauri ---
 src-tauri/target/
 src-tauri/gen/
+# sidecar 与 PyInstaller 本地产物（CI 生成）
+src-tauri/binaries/
+dist/
+build/
+*.spec
 
 # --- 本地配置与密钥 ---
 .env

@@ -30,8 +30,9 @@ SCAN_SUFFIXES = {
     ".py", ".md", ".json", ".yaml", ".yml",
 }
 
-# 允许 emoji 的目录（UGC / 聊天消息等），MVP 阶段无豁免
-EXEMPT_PARTS = {".venv", "node_modules", "dist", "target", ".git", "__pycache__"}
+# 允许 emoji 的目录（UGC / 聊天消息等），MVP 阶段无豁免；
+# .pylibs / dist / build 等为第三方或构建产物目录，不属于我方 UI 代码
+EXEMPT_PARTS = {".venv", ".pylibs", "node_modules", "dist", "build", "target", ".git", "__pycache__"}
 
 
 def iter_files(targets: list[str], repo_root: Path) -> list[Path]:

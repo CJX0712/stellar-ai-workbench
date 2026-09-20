@@ -16,7 +16,7 @@
 
 | ID | 标题 | 状态 | 触发条件 | 负责人 |
 | --- | --- | --- | --- | --- |
-| OD-001 | Tauri 桌面二进制需 Rust + MSVC 本机 / CI 构建 | OPEN | 进入打包阶段前 | team-lead |
+| OD-001 | Tauri 桌面二进制需 Rust + MSVC 本机 / CI 构建 | RESOLVED 2026-09-21 | 已落地，无需跟进 | team-lead |
 | OD-002 | lancedb / pyarrow 在 Python 3.13 + win_amd64 的 wheel 可用性 | OPEN | 知识库超约 1 万条，或启用 LanceDB 时 | backend-2 |
 | OD-003 | 多用户 / RBAC 延后到 v2.0 | OPEN（已决定延后） | 出现第二个真实用户时 | team-lead / pm |
 | OD-004 | Mock 静默降级的前端可见性策略 | OPEN | 前端接入 health 接口时 | frontend |
@@ -25,19 +25,20 @@
 
 ## OD-001: Tauri 桌面二进制需 Rust + MSVC 本机 / CI 构建
 
-**状态**：OPEN
+**状态**：RESOLVED（2026-09-21，选项 B）
 
 **背景**：Tauri v2 的桌面产物需要 Rust 工具链（rustup / cargo）；Windows 上还需 MSVC 生成工具与 WebView2 运行时。同时 PyInstaller 不能跨平台编译，win / mac / linux 三套 sidecar 二进制必须在各自平台构建。
 
-**影响**：
+**Resolution（选项 B：CI 矩阵三平台安装包）**：
 
-- 若只交付「源码 + 运行脚本」，则「桌面应用」形态实际不成立，用户仍需自行准备 Python 与 Rust 环境。
-- 若要求交付安装包，则构建链前置依赖显著变重，且必须搭建 CI 矩阵（windows-latest / macos-latest / ubuntu-latest 各构建一次）。
-- 本机首次构建耗时长，会影响开发体验与新人上手成本。
-
-**触发条件**：进入打包阶段前、或首次对外发布前，必须决断「交付源码自跑」还是「交付安装包」。
-
-**决断选项**：A) 只交付源码与运行脚本，桌面壳延后；B) 搭建 CI 矩阵产出三平台安装包；C) 先只支持 Windows 单平台安装包。
+- `.github/workflows/ci.yml`：push/PR 时跑后端 pytest（ubuntu+windows 矩阵）、前端 tsc+vite build、P0 emoji 门禁。
+- `.github/workflows/release.yml`：三平台矩阵（windows-latest / macos-latest / ubuntu-22.04），每台先 PyInstaller 打 Python sidecar（`backend/run_server.py` → `src-tauri/binaries/stellar-backend-<target-triple>`），再用 tauri-action 构建。
+  - 推 `v*` tag → 自动创建 GitHub Release 并附三平台安装包；
+  - workflow_dispatch 手动触发 → 构建产物上传为 workflow artifact。
+- sidecar 的 `externalBin` 不进基础 `tauri.conf.json`（避免本地 dev 缺二进制报错），由 `src-tauri/tauri.release.conf.json` 在构建时通过 `--config` 注入。
+- 图标三平台齐备：`tools/gen_icons.py` 生成 icon.ico / icon.icns / icon.png（1024）等，纯标准库实现。
+- Rust 壳（`lib.rs`）负责拉起 sidecar 并在退出时回收子进程；sidecar 缺失时优雅降级（手动 uvicorn 仍可用）。
+- 本机从此无需安装 Rust + MSVC；`Cargo.lock` 由 CI 首次构建生成（后续可提交回仓库以增强复现）。
 
 **负责人**：team-lead
 
