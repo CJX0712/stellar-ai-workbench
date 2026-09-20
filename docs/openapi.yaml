@@ -1,0 +1,230 @@
+openapi: 3.0.3
+info:
+  title: Stellar AI Workbench API
+  version: 0.1.0
+  description: |
+    模块化桌面 AI 工作台后端契约（Stellar AI Workbench, 作者：晨星）。
+    所有端点前缀 /api/v1。对话/智能体走 SSE 流式。
+  license:
+    name: MIT
+servers:
+  - url: http://127.0.0.1:8000
+    description: 本地后端（Tauri sidecar 内运行）
+tags:
+  - name: health
+  - name: models
+  - name: chat
+  - name: knowledge
+  - name: rag
+  - name: agents
+  - name: settings
+paths:
+  /api/v1/health:
+    get:
+      tags: [health]
+      summary: 健康检查与模块清单
+      operationId: health
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: ok }
+                  provider: { type: string, example: mock }
+                  modules:
+                    type: array
+                    items: { type: string }
+                    example: [inference, retrieval, rag, agent, tools, memory]
+  /api/v1/models:
+    get:
+      tags: [models]
+      summary: 列出可用模型与当前激活模型
+      operationId: listModels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active: { type: string, example: mock }
+                  models:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: { type: string, example: mock }
+                        label: { type: string, example: Mock Provider }
+                        kind: { type: string, example: mock }
+  /api/v1/chat:
+    post:
+      tags: [chat]
+      summary: 对话（SSE 流式返回文本分片）
+      operationId: chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [messages]
+              properties:
+                messages:
+                  type: array
+                  items:
+                    type: object
+                    required: [role, content]
+                    properties:
+                      role: { type: string, enum: [system, user, assistant] }
+                      content: { type: string }
+                model: { type: string, nullable: true, example: mock }
+                session: { type: string, nullable: true, example: default }
+                stream: { type: boolean, default: true }
+      responses:
+        '200':
+          description: SSE 流
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                example: 'data: {"type":"delta","text":"你好"}\n\n'
+        '502':
+          description: 上游推理服务不可用（已尝试故障转移）
+  /api/v1/knowledge/add:
+    post:
+      tags: [knowledge]
+      summary: 导入文本到知识库（切片 + 向量化落盘）
+      operationId: addKnowledge
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [kb_id, texts]
+              properties:
+                kb_id: { type: string, example: demo }
+                texts:
+                  type: array
+                  items: { type: string }
+                metas:
+                  type: array
+                  items: { type: object }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  kb_id: { type: string }
+                  chunk_count: { type: integer, example: 1 }
+  /api/v1/rag/query:
+    post:
+      tags: [rag]
+      summary: 检索增强问答（返回答案 + 来源片段）
+      operationId: ragQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [query, kb_id]
+              properties:
+                query: { type: string, example: Stellar 是什么 }
+                kb_id: { type: string, example: demo }
+                top_k: { type: integer, default: 4 }
+                model: { type: string, nullable: true }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  answer: { type: string }
+                  sources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        text: { type: string }
+                        score: { type: number }
+                        meta: { type: object }
+  /api/v1/agents/run:
+    post:
+      tags: [agents]
+      summary: 运行智能体任务（SSE 返回每一步 Observation）
+      operationId: runAgent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [task]
+              properties:
+                task: { type: string, example: 查询知识库并总结 }
+                session: { type: string, nullable: true }
+                max_steps: { type: integer, default: 6 }
+                tools:
+                  type: array
+                  items: { type: string }
+      responses:
+        '200':
+          description: SSE 流
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                example: 'data: {"type":"step","index":0,"observation":"..."}\n\n'
+  /api/v1/settings:
+    get:
+      tags: [settings]
+      summary: 读取当前模型配置（api_key 脱敏）
+      operationId: getSettings
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  base_url: { type: string, nullable: true }
+                  model: { type: string, example: mock }
+                  has_api_key: { type: boolean }
+                  fallback_model: { type: string, nullable: true }
+    post:
+      tags: [settings]
+      summary: 更新模型配置（持久化到本地 .env）
+      operationId: updateSettings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                base_url: { type: string, nullable: true }
+                api_key: { type: string, nullable: true }
+                model: { type: string, nullable: true }
+                fallback_model: { type: string, nullable: true }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean, example: true }
+components:
+  schemas: {}

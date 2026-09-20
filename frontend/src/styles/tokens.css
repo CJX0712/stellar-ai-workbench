@@ -1,0 +1,79 @@
+/* Stellar AI Workbench — Design Tokens (作者：晨星)
+   深色「精密仪器」设计语言。禁止 emoji 图标 / 禁止紫粉渐变 / 禁止硬编码颜色。 */
+
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0b0c0e;
+  --color-surface: #14161a;
+  --color-surface-2: #1c1f24;
+  --color-fg: #f2f4f7;
+  --color-fg-2: #c7cbd1;
+  --color-muted: #8a8f98;
+  --color-border: rgba(255, 255, 255, 0.07);
+  --color-border-strong: rgba(255, 255, 255, 0.12);
+  --color-accent: #22d3c5;
+  --color-accent-soft: rgba(34, 211, 197, 0.12);
+  --color-success: #3fb950;
+  --color-warn: #e3a23c;
+  --color-danger: #f85149;
+
+  --font-display: Geist, "Inter Variable", "Noto Sans SC", sans-serif;
+  --font-body: Geist, "Inter Variable", "Noto Sans SC", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+:root {
+  --bg: #0b0c0e;
+  --surface: #14161a;
+  --surface-2: #1c1f24;
+  --fg: #f2f4f7;
+  --fg-2: #c7cbd1;
+  --muted: #8a8f98;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --accent: #22d3c5;
+  --accent-soft: rgba(34, 211, 197, 0.12);
+  --success: #3fb950;
+  --warn: #e3a23c;
+  --danger: #f85149;
+
+  --layout-sidebar: 240px;
+  --layout-inspector: 320px;
+  --layout-statusbar: 28px;
+
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 焦点环：唯一强调色，禁止紫粉渐变 */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* 滚动条：发丝级，不喧宾夺主 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-sm);
+}

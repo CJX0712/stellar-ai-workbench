@@ -1,0 +1,36 @@
+# Author: 晨星
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.venv-*/
+.venv-broken-*/
+.pylibs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+backend/data/
+
+# --- Node / 前端 ---
+node_modules/
+frontend/dist/
+*.local
+
+# --- Rust / Tauri ---
+src-tauri/target/
+src-tauri/gen/
+
+# --- 本地配置与密钥 ---
+.env
+backend/.env
+
+# --- 日志与临时产物 ---
+*.log
+*.tmp
+
+# --- 编辑器 / 系统 ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "name": "stellar-ai-workbench",
+  "description": "Design tokens for Stellar AI Workbench (作者：晨星). 深色「精密仪器」设计语言。",
+  "icon": {
+    "library": { "value": "lucide", "comment": "MIT, 唯一 SVG 图标库，禁用 emoji 图标" },
+    "sizes": { "value": [16, 20, 24] },
+    "stroke": { "value": 2 }
+  },
+  "color": {
+    "bg": { "value": "#0B0C0E" },
+    "surface": { "value": "#14161A" },
+    "surface-2": { "value": "#1C1F24" },
+    "fg": { "value": "#F2F4F7" },
+    "fg-2": { "value": "#C7CBD1" },
+    "muted": { "value": "#8A8F98" },
+    "border": { "value": "rgba(255,255,255,0.07)" },
+    "border-strong": { "value": "rgba(255,255,255,0.12)" },
+    "accent": { "value": "#22D3C5" },
+    "accent-soft": { "value": "rgba(34,211,197,0.12)" },
+    "success": { "value": "#3FB950" },
+    "warn": { "value": "#E3A23C" },
+    "danger": { "value": "#F85149" }
+  },
+  "font": {
+    "display": { "value": "Geist, 'Inter Variable', 'Noto Sans SC', sans-serif" },
+    "body": { "value": "Geist, 'Inter Variable', 'Noto Sans SC', sans-serif" },
+    "mono": { "value": "'JetBrains Mono', 'Fira Code', monospace" }
+  },
+  "radius": {
+    "sm": { "value": "6px" },
+    "md": { "value": "10px" },
+    "lg": { "value": "14px" }
+  },
+  "layout": {
+    "sidebar": { "value": "240px" },
+    "inspector": { "value": "320px" },
+    "statusbar": { "value": "28px" }
+  },
+  "rules": {
+    "no_emoji_icons": true,
+    "no_purple_pink_gradient": true,
+    "accent_max_per_screen": 2
+  }
+}
