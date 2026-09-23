@@ -1,5 +1,12 @@
 # Stellar AI Workbench
 
+<p align="center">
+  <a href="https://github.com/CJX0712/stellar-ai-workbench/actions/workflows/ci.yml"><img src="https://github.com/CJX0712/stellar-ai-workbench/actions/workflows/ci.yml/badge.svg" alt="ci"></a>
+  <a href="https://github.com/CJX0712/stellar-ai-workbench/releases"><img src="https://img.shields.io/github/v/release/CJX0712/stellar-ai-workbench?sort=semver" alt="release"></a>
+  <a href="https://github.com/CJX0712/stellar-ai-workbench/blob/main/LICENSE"><img src="https://img.shields.io/github/license/CJX0712/stellar-ai-workbench" alt="license"></a>
+  <img src="https://img.shields.io/badge/author-%E6%99%A8%E6%98%9F-1f6feb" alt="author">
+</p>
+
 > 模块化桌面 AI 工作台 · 整合开源成果 · 端到端可运行 · 干净环境一键复现
 > 作者：**晨星** · 许可：MIT
 
