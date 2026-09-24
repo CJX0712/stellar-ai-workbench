@@ -23,7 +23,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest==8.4.2"]
+dev = ["pytest==9.1.1"]
 # 向量库为可选增强：不装也能跑（自动回退进程内向量存储），详见 README「依赖替换说明」
 lancedb = ["lancedb==0.24.3", "pyarrow>=18"]
 
