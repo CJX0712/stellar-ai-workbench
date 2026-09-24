@@ -11,9 +11,9 @@ authors = [{ name = "晨星" }]
 license = { text = "MIT" }
 requires-python = ">=3.11"
 dependencies = [
-    "fastapi==0.115.14",
+    "fastapi==0.141.1",
     "starlette==0.46.2",
-    "uvicorn==0.34.3",
+    "uvicorn==0.53.0",
     "pydantic==2.13.5",
     "pydantic-settings==2.15.0",
     "python-dotenv==1.2.3",
@@ -25,7 +25,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest==8.4.2"]
 # 向量库为可选增强：不装也能跑（自动回退进程内向量存储），详见 README「依赖替换说明」
-lancedb = ["lancedb==0.24.3", "pyarrow>=18"]
+lancedb = ["lancedb==0.38.0", "pyarrow>=18"]
 
 [tool.setuptools]
 packages = ["app", "app.core", "app.modules", "app.api"]
