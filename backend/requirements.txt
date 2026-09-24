@@ -3,7 +3,7 @@
 # 安装： python -m venv .venv && .venv\Scripts\python -m pip install -r requirements.txt
 # 说明：下列版本均在本机 Python 3.13 上真实安装并通过 78 项测试
 fastapi==0.115.14
-starlette==0.46.2
+starlette==1.6.0
 uvicorn==0.34.3
 pydantic==2.13.5
 pydantic-settings==2.15.0
