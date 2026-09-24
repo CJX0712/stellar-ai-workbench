@@ -2,9 +2,9 @@
 # Stellar AI Workbench 后端运行时依赖（精确锁定，干净环境可一键复现）
 # 安装： python -m venv .venv && .venv\Scripts\python -m pip install -r requirements.txt
 # 说明：下列版本均在本机 Python 3.13 上真实安装并通过 78 项测试
-fastapi==0.115.14
+fastapi==0.141.1
 starlette==0.46.2
-uvicorn==0.34.3
+uvicorn==0.53.0
 pydantic==2.13.5
 pydantic-settings==2.15.0
 python-dotenv==1.2.3
